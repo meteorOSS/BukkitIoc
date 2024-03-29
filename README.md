@@ -1,46 +1,31 @@
-闲着无聊倒腾出来的东西，大概有点作用吧
+闲着无聊倒腾出来的东西，大概有点作用
 
-
-
-平时写插件的时候，代码可能充斥着下面这坨东西
-
-
+平时写spigot插件的时候，代码可能充斥着下面这坨东西
 
 ``` java
-
 var permission = javaPlugin#getConfig("req-permission")
-
 .......
-
 ```
-
-
 
 这样重复度高的代码，你可以使用 BukkitIoc 干掉它！
 
 BukkitIoc以注解代替这些繁琐的工作，支持以下注入方式
 
-
-
 1. @Value(name="path") : 在yaml中读取
-
-
-
 比如这样的yaml结构:
 
-[CODE]shop:
+``` yaml
+shop:
 
   title: '商店'
 
   player: 20
-
-[/CODE]
+```
 
 对应的组件实现
 
-
-
-[CODE=java]import com.meteor.bukkitioc.annotation.Component;
+``` java
+import com.meteor.bukkitioc.annotation.Component;
 
 import com.meteor.bukkitioc.annotation.Value;
 
@@ -62,15 +47,16 @@ public class Shop {
 
     private int player;
 
-}[/CODE]
+}
+```
 
 
 
 2. @Bean: 工厂方法
 
 
-
-[CODE=java]@Configuration
+``` java
+@Configuration
 
 public class ShopItemFactory {
 
@@ -90,7 +76,7 @@ public class ShopItemFactory {
 
 }
 
-[/CODE]
+```
 
 
 
@@ -104,7 +90,8 @@ public class ShopItemFactory {
 
 当你要在其他地方使用的时候，只需要使用@Autowired 注入
 
-[CODE=java]import com.meteor.bukkitioc.annotation.Autowired;
+``` java
+import com.meteor.bukkitioc.annotation.Autowired;
 
 import com.meteor.bukkitioc.annotation.Configuration;
 
@@ -122,7 +109,7 @@ public class BaseConfig {
 
 }
 
-[/CODE]
+``` 
 
 
 
