@@ -32,10 +32,17 @@ public class AnnotationConfigApplicationContext implements ConfigurableApplicati
 
     ClassLoader classLoader;
 
-    public AnnotationConfigApplicationContext(Class<?> configClass,PropertyResolver propertyResolver,ClassLoader classLoader){
+    public AnnotationConfigApplicationContext(Class<?> configClass,PropertyResolver propertyResolver,ClassLoader classLoader,JavaPlugin javaPlugin){
         this.classLoader = classLoader;
         Set<String> classNameSet = scanForClassName(configClass);
-        this.beans = createBeanDefinitions(classNameSet);
+        this.beans = new HashMap<>();
+
+        BeanDefinition javaPluginBean =
+                new BeanDefinition("plugin",javaPlugin.getClass(),javaPlugin
+                        ,javaPlugin.getClass().getConstructors()[0],null,null,getOrder(javaPlugin.getClass()),
+                        false,null,null,null,null);
+        this.beans.put("plugin",javaPluginBean);
+        this.beans.putAll(createBeanDefinitions(classNameSet));
         this.propertyResolver = propertyResolver;
         this.creatingBeanNames = new HashSet<>();
 
